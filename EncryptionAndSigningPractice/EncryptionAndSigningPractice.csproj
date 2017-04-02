@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>EncryptionAndSigningPractice.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -45,14 +48,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="Bob.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Bob.Designer.cs">
+      <DependentUpon>Bob.cs</DependentUpon>
     </Compile>
+    <Compile Include="Alice.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Alice.Designer.cs">
+      <DependentUpon>Alice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KeyRing.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Alice.resx">
+      <DependentUpon>Alice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Bob.resx">
+      <DependentUpon>Bob.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
