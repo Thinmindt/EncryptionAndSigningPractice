@@ -36,6 +36,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.GetHMACButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
+            this.GetDigiSigButton = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -117,11 +119,34 @@
             this.label5.Text = "label5";
             this.label5.Visible = false;
             // 
+            // GetDigiSigButton
+            // 
+            this.GetDigiSigButton.Location = new System.Drawing.Point(13, 120);
+            this.GetDigiSigButton.Name = "GetDigiSigButton";
+            this.GetDigiSigButton.Size = new System.Drawing.Size(75, 23);
+            this.GetDigiSigButton.TabIndex = 8;
+            this.GetDigiSigButton.Text = "Get DigiSig";
+            this.GetDigiSigButton.UseVisualStyleBackColor = true;
+            this.GetDigiSigButton.Visible = false;
+            this.GetDigiSigButton.Click += new System.EventHandler(this.GetDigiSigButton_Click);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(95, 120);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(35, 13);
+            this.label6.TabIndex = 9;
+            this.label6.Text = "label6";
+            this.label6.Visible = false;
+            // 
             // Bob
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(685, 261);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.GetDigiSigButton);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.GetHMACButton);
             this.Controls.Add(this.label4);
@@ -148,5 +173,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button GetHMACButton;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button GetDigiSigButton;
+        private System.Windows.Forms.Label label6;
     }
 }

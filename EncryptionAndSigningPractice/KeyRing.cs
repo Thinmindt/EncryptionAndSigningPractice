@@ -72,6 +72,30 @@ namespace EncryptionAndSigningPractice
             return completeHash;
         }
 
+        public byte[] DigitalSignatureSign(byte[] message)
+        {
+            // compute hash of message
+            SHA256 sha = new SHA256Managed();
+            byte[] hash = sha.ComputeHash(message);
+
+            // sign with RSA
+            byte[] signature = myRSA.SignHash(hash, "SHA256");
+            return signature;
+        }
+
+        public bool DigitalSignatureVerify(byte[] message, byte[] signatureFromSender)
+        {
+            // compute hash of message
+            SHA256 sha = new SHA256Managed();
+            byte[] hash = sha.ComputeHash(message);
+
+            // verify with RSA
+            if (otherRSA.VerifyHash(hash, "SHA256", signatureFromSender))
+                return true;
+            else
+                return false;
+        }
+
         private byte[] concatByteArray(byte[] first, byte[] second)
         {
             byte[] combined = new byte[first.Length + second.Length];

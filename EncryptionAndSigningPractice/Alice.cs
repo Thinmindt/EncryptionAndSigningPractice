@@ -54,6 +54,7 @@ namespace EncryptionAndSigningPractice
             label2.Visible = true;
             AESButton.Visible = true;
             HMACButton.Visible = true;
+            DigiSigButton.Visible = true;
         }
 
         private void AESButton_Click(object sender, EventArgs e)
@@ -83,14 +84,29 @@ namespace EncryptionAndSigningPractice
 
         private void HMACButton_Click(object sender, EventArgs e)
         {
+            // generate and send message
             byte[] message = generateMessageOfLength(30);
             SaveMessageToFile(message, "HMACMessage");
 
+            // get and send hash
             byte[] hash = keys.HMAC(message);
             SaveMessageToFile(hash, "HMACHash");
 
+            // display hash
             label4.Text = "HMAC = " + ByteArrayToString(hash);
             label4.Visible = true;
+        }
+
+        private void DigiSigButton_Click(object sender, EventArgs e)
+        {
+            byte[] message = generateMessageOfLength(40);
+            SaveMessageToFile(message, "DigiSigMessage");
+
+            byte[] signature = keys.DigitalSignatureSign(message);
+            SaveMessageToFile(signature, "DigiSigSignature");
+
+            label5.Text = "sent message and signature";
+            label5.Visible = true;
         }
 
         private static string ByteArrayToString(byte[] ba)

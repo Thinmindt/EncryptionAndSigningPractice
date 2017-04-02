@@ -36,6 +36,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.HMACButton = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
+            this.DigiSigButton = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // createKeysButton
@@ -122,11 +124,34 @@
             this.label4.Text = "label4";
             this.label4.Visible = false;
             // 
+            // DigiSigButton
+            // 
+            this.DigiSigButton.Location = new System.Drawing.Point(12, 131);
+            this.DigiSigButton.Name = "DigiSigButton";
+            this.DigiSigButton.Size = new System.Drawing.Size(128, 23);
+            this.DigiSigButton.TabIndex = 8;
+            this.DigiSigButton.Text = "Send with DigiSig";
+            this.DigiSigButton.UseVisualStyleBackColor = true;
+            this.DigiSigButton.Visible = false;
+            this.DigiSigButton.Click += new System.EventHandler(this.DigiSigButton_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(147, 131);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(35, 13);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "label5";
+            this.label5.Visible = false;
+            // 
             // Alice
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(894, 565);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.DigiSigButton);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.HMACButton);
             this.Controls.Add(this.label3);
@@ -153,6 +178,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button HMACButton;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button DigiSigButton;
+        private System.Windows.Forms.Label label5;
     }
 }
 

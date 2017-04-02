@@ -39,6 +39,7 @@ namespace EncryptionAndSigningPractice
                 label3.Visible = true;
                 getAESButton.Visible = true;
                 GetHMACButton.Visible = true;
+                GetDigiSigButton.Visible = true;
             }
             catch
             {
@@ -74,6 +75,19 @@ namespace EncryptionAndSigningPractice
             else
                 label5.Text = "Verification Failed. Hash = " + ByteArrayToString(hashToVerify);
             label5.Visible = true;
+        }
+
+        private void GetDigiSigButton_Click(object sender, EventArgs e)
+        {
+            byte[] message = readFromFile("DigiSigMessage");
+            byte[] signature = readFromFile("DigiSigSignature");
+
+            if (keys.DigitalSignatureVerify(message, signature))
+                label6.Text = "Signature Verified Successfully";
+            else
+                label6.Text = "Signature Verification Failed";
+
+            label6.Visible = true;
         }
 
         private bool ByteArraysEqual(byte[] hashFromSender, byte[] hashToVerify)
