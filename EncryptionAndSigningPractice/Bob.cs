@@ -52,6 +52,7 @@ namespace EncryptionAndSigningPractice
                 // display k
                 label3.Text = "k = " + ByteArrayToString(k);
                 label3.Visible = true;
+                getAESButton.Visible = true;
             }
             catch
             {
@@ -71,6 +72,30 @@ namespace EncryptionAndSigningPractice
             foreach (byte b in ba)
                 hex.AppendFormat("{0:x2}", b);
             return hex.ToString();
+        }
+
+        private void getAESButton_Click(object sender, EventArgs e)
+        {
+            // get iv and ciphertext
+            byte[] ciphertext = readFromFile("AESCiphertext");
+            byte[] iv = readFromFile("AESiv");
+            keys.AES.IV = iv;
+
+            // decrypt ciphertext
+            byte[] message = DecryptAES(ciphertext);
+
+            // display message
+            label4.Text = "message = " + ByteArrayToString(message) + " iv = " + ByteArrayToString(iv);
+            label4.Visible = true;
+        }
+
+        public byte[] DecryptAES(byte[] encrypted)
+        {
+            MemoryStream ms = new MemoryStream();
+            CryptoStream cs = new CryptoStream(ms, keys.AES.CreateDecryptor(), CryptoStreamMode.Write);
+            cs.Write(encrypted, 0, encrypted.Length);
+            cs.Close();
+            return ms.ToArray();
         }
     }
 }

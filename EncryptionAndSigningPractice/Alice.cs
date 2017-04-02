@@ -58,10 +58,11 @@ namespace EncryptionAndSigningPractice
 
             // use Bob's public key to encrypt k and save it
             byte[] cipherText = keys.otherRSA.Encrypt(keys.getK(), false);
-            if (saveMessageToFile(cipherText, "k"))
+            if (SaveMessageToFile(cipherText, "k"))
                 label2.Text = "Message is saved and ready to be recieved.";
 
             label2.Visible = true;
+            AESButton.Visible = true;
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -82,6 +83,8 @@ namespace EncryptionAndSigningPractice
             byte[] message = new byte[length];
             Random r = new Random();
             r.NextBytes(message);
+            if (message.Length != length)
+                label1.Text = "check out generate message function";
             return message;
         }
 
@@ -90,18 +93,26 @@ namespace EncryptionAndSigningPractice
 
         }
 
-        private bool saveMessageToFile(byte[] message, string type)
+        private bool SaveMessageToFile(byte[] message, string type)
         {
-            string path = "./messages/" + type + ".txt";
-            
-            if (!Directory.Exists("./ messages"))
-                Directory.CreateDirectory("./messages");
+            try
+            {
+                string path = "./messages/" + type + ".txt";
 
-            if (!File.Exists(path))
-                File.Create(path);
-            File.WriteAllBytes(path, message);
+                if (!Directory.Exists("./ messages"))
+                    Directory.CreateDirectory("./messages");
 
-            return true;
+                if (!File.Exists(path))
+                    File.Create(path);
+
+                File.WriteAllBytes(path, message);
+
+                return true;
+            }
+            catch (IOException e)
+            {
+                throw;
+            }
         }
 
         private void AESButton_Click(object sender, EventArgs e)
@@ -110,55 +121,32 @@ namespace EncryptionAndSigningPractice
             byte[] message = generateMessageOfLength(25);
             keys.AES.GenerateIV();
             byte[] iv = keys.AES.IV;
-            byte[] key = keys.AES.Key;
+            label3.Text = "message = " + ByteArrayToString(message) + " iv = " + ByteArrayToString(iv);
 
             // use IV and key to encrypt the message
-            byte[] ciphertext = EncryptStringToBytes_Aes(message.ToString(), key, iv);
+            byte[] ciphertext = EncryptAES(message);
 
-            saveMessageToFile(ciphertext, "AESCiphertext");
-            saveMessageToFile(iv, "AESiv");
-        }
-
-        static byte[] EncryptStringToBytes_Aes(string plainText, byte[] Key, byte[] IV)
-        {
-            // Check arguments.
-            if (plainText == null || plainText.Length <= 0)
-                throw new ArgumentNullException("plainText");
-            if (Key == null || Key.Length <= 0)
-                throw new ArgumentNullException("Key");
-            if (IV == null || IV.Length <= 0)
-                throw new ArgumentNullException("IV");
-            byte[] encrypted;
-            // Create an AesCryptoServiceProvider object
-            // with the specified key and IV.
-            using (AesCryptoServiceProvider aesAlg = new AesCryptoServiceProvider())
+            // save to file
+            if (!SaveMessageToFile(ciphertext, "AESCiphertext"))
             {
-                aesAlg.Key = Key;
-                aesAlg.IV = IV;
-
-                // Create a decrytor to perform the stream transform.
-                ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
-
-                // Create the streams used for encryption.
-                using (MemoryStream msEncrypt = new MemoryStream())
-                {
-                    using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
-                    {
-                        using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
-                        {
-
-                            //Write all data to the stream.
-                            swEncrypt.Write(plainText);
-                        }
-                        encrypted = msEncrypt.ToArray();
-                    }
-                }
+                label3.Text = "failed to save ciphertext";
+            }
+            if (!SaveMessageToFile(iv, "AESiv"))
+            {
+                label3.Text = "failed to save iv";
             }
 
+            // display message
+            label3.Visible = true;
+        }
 
-            // Return the encrypted bytes from the memory stream.
-            return encrypted;
-
+        public byte[] EncryptAES(byte[] plain)
+        {
+            MemoryStream ms = new MemoryStream();
+            CryptoStream cs = new CryptoStream(ms, keys.AES.CreateEncryptor(), CryptoStreamMode.Write);
+            cs.Write(plain, 0, plain.Length);
+            cs.Close();
+            return ms.ToArray();
         }
     }
 }
