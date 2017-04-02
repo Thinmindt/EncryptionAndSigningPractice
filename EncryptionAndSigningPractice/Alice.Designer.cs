@@ -34,6 +34,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.AESButton = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
+            this.HMACButton = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // createKeysButton
@@ -99,11 +101,34 @@
             this.label3.Text = "label3";
             this.label3.Visible = false;
             // 
+            // HMACButton
+            // 
+            this.HMACButton.Location = new System.Drawing.Point(13, 101);
+            this.HMACButton.Name = "HMACButton";
+            this.HMACButton.Size = new System.Drawing.Size(127, 23);
+            this.HMACButton.TabIndex = 6;
+            this.HMACButton.Text = "Send with HMAC";
+            this.HMACButton.UseVisualStyleBackColor = true;
+            this.HMACButton.Visible = false;
+            this.HMACButton.Click += new System.EventHandler(this.HMACButton_Click);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(147, 101);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(35, 13);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "label4";
+            this.label4.Visible = false;
+            // 
             // Alice
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(894, 565);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.HMACButton);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.AESButton);
             this.Controls.Add(this.label2);
@@ -126,6 +151,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button AESButton;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button HMACButton;
+        private System.Windows.Forms.Label label4;
     }
 }
 

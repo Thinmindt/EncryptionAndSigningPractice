@@ -23,21 +23,6 @@ namespace EncryptionAndSigningPractice
 
         }
 
-        public void setAlicePublicKey(RSAParameters AlicePublicKey)
-        {
-            keys.setOtherPublicRSA(AlicePublicKey);
-        }
-
-        private void Bob_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        internal RSAParameters getBobPublicKey()
-        {
-            return keys.getMyPublicRSA();
-        }
-
         private void GetKButton_Click(object sender, EventArgs e)
         {
             try
@@ -53,12 +38,53 @@ namespace EncryptionAndSigningPractice
                 label3.Text = "k = " + ByteArrayToString(k);
                 label3.Visible = true;
                 getAESButton.Visible = true;
+                GetHMACButton.Visible = true;
             }
             catch
             {
                 label3.Text = "Please send k first.";
                 label3.Visible = true;
             }
+        }
+
+        private void getAESButton_Click(object sender, EventArgs e)
+        {
+            // get iv and ciphertext
+            byte[] ciphertext = readFromFile("AESCiphertext");
+            byte[] iv = readFromFile("AESiv");
+            keys.AES.IV = iv;
+
+            // decrypt ciphertext
+            byte[] message = keys.DecryptAES(ciphertext);
+
+            // display message
+            label4.Text = "message = " + ByteArrayToString(message) + " iv = " + ByteArrayToString(iv);
+            label4.Visible = true;
+        }
+
+        private void GetHMACButton_Click(object sender, EventArgs e)
+        {
+            byte[] message = readFromFile("HMACMessage");
+            byte[] hashFromSender = readFromFile("HMACHash");
+
+            byte[] hashToVerify = keys.HMAC(message);
+
+            if (ByteArraysEqual(hashFromSender, hashToVerify))
+                label5.Text = "Verification Successful. Hash = " + ByteArrayToString(hashToVerify);
+            else
+                label5.Text = "Verification Failed. Hash = " + ByteArrayToString(hashToVerify);
+            label5.Visible = true;
+        }
+
+        private bool ByteArraysEqual(byte[] hashFromSender, byte[] hashToVerify)
+        {
+            bool equal = true;
+            for (int i = 0; i < hashToVerify.Length; i++)
+            {
+                if (hashFromSender[i] != hashToVerify[i])
+                    equal = false;
+            }
+            return equal;
         }
 
         private byte[] readFromFile(string type)
@@ -74,28 +100,19 @@ namespace EncryptionAndSigningPractice
             return hex.ToString();
         }
 
-        private void getAESButton_Click(object sender, EventArgs e)
+        public void setAlicePublicKey(RSAParameters AlicePublicKey)
         {
-            // get iv and ciphertext
-            byte[] ciphertext = readFromFile("AESCiphertext");
-            byte[] iv = readFromFile("AESiv");
-            keys.AES.IV = iv;
-
-            // decrypt ciphertext
-            byte[] message = DecryptAES(ciphertext);
-
-            // display message
-            label4.Text = "message = " + ByteArrayToString(message) + " iv = " + ByteArrayToString(iv);
-            label4.Visible = true;
+            keys.setOtherPublicRSA(AlicePublicKey);
         }
 
-        public byte[] DecryptAES(byte[] encrypted)
+        internal RSAParameters getBobPublicKey()
         {
-            MemoryStream ms = new MemoryStream();
-            CryptoStream cs = new CryptoStream(ms, keys.AES.CreateDecryptor(), CryptoStreamMode.Write);
-            cs.Write(encrypted, 0, encrypted.Length);
-            cs.Close();
-            return ms.ToArray();
+            return keys.getMyPublicRSA();
+        }
+
+        private void Bob_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

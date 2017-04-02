@@ -34,6 +34,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.getAESButton = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
+            this.GetHMACButton = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -94,11 +96,34 @@
             this.label4.Text = "label4";
             this.label4.Visible = false;
             // 
+            // GetHMACButton
+            // 
+            this.GetHMACButton.Location = new System.Drawing.Point(13, 90);
+            this.GetHMACButton.Name = "GetHMACButton";
+            this.GetHMACButton.Size = new System.Drawing.Size(75, 23);
+            this.GetHMACButton.TabIndex = 6;
+            this.GetHMACButton.Text = "Get HMAC";
+            this.GetHMACButton.UseVisualStyleBackColor = true;
+            this.GetHMACButton.Visible = false;
+            this.GetHMACButton.Click += new System.EventHandler(this.GetHMACButton_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(95, 90);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(35, 13);
+            this.label5.TabIndex = 7;
+            this.label5.Text = "label5";
+            this.label5.Visible = false;
+            // 
             // Bob
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(685, 261);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.GetHMACButton);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.getAESButton);
             this.Controls.Add(this.label3);
@@ -121,5 +146,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button getAESButton;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button GetHMACButton;
+        private System.Windows.Forms.Label label5;
     }
 }

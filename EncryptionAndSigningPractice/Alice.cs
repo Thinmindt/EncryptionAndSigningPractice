@@ -42,16 +42,6 @@ namespace EncryptionAndSigningPractice
             label1.Text = "Generated RSA keys, shared public keys, and generated k = " + ByteArrayToString(k);
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Alice_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void SendK_Click(object sender, EventArgs e)
         {
             label2.Text = "Message saving failed.";
@@ -63,11 +53,44 @@ namespace EncryptionAndSigningPractice
 
             label2.Visible = true;
             AESButton.Visible = true;
+            HMACButton.Visible = true;
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void AESButton_Click(object sender, EventArgs e)
         {
+            // generate random message and IV
+            byte[] message = generateMessageOfLength(25);
+            keys.AES.GenerateIV();
+            byte[] iv = keys.AES.IV;
+            label3.Text = "message = " + ByteArrayToString(message) + " iv = " + ByteArrayToString(iv);
 
+            // use IV and key to encrypt the message
+            byte[] ciphertext = keys.EncryptAES(message);
+
+            // save to file
+            if (!SaveMessageToFile(ciphertext, "AESCiphertext"))
+            {
+                label3.Text = "failed to save ciphertext";
+            }
+            if (!SaveMessageToFile(iv, "AESiv"))
+            {
+                label3.Text = "failed to save iv";
+            }
+
+            // display message
+            label3.Visible = true;
+        }
+
+        private void HMACButton_Click(object sender, EventArgs e)
+        {
+            byte[] message = generateMessageOfLength(30);
+            SaveMessageToFile(message, "HMACMessage");
+
+            byte[] hash = keys.HMAC(message);
+            SaveMessageToFile(hash, "HMACHash");
+
+            label4.Text = "HMAC = " + ByteArrayToString(hash);
+            label4.Visible = true;
         }
 
         private static string ByteArrayToString(byte[] ba)
@@ -88,11 +111,6 @@ namespace EncryptionAndSigningPractice
             return message;
         }
 
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private bool SaveMessageToFile(byte[] message, string type)
         {
             try
@@ -103,7 +121,7 @@ namespace EncryptionAndSigningPractice
                     Directory.CreateDirectory("./messages");
 
                 if (!File.Exists(path))
-                    File.Create(path);
+                    File.Create(path).Close();
 
                 File.WriteAllBytes(path, message);
 
@@ -115,38 +133,24 @@ namespace EncryptionAndSigningPractice
             }
         }
 
-        private void AESButton_Click(object sender, EventArgs e)
+        private void label2_Click(object sender, EventArgs e)
         {
-            // generate random message and IV
-            byte[] message = generateMessageOfLength(25);
-            keys.AES.GenerateIV();
-            byte[] iv = keys.AES.IV;
-            label3.Text = "message = " + ByteArrayToString(message) + " iv = " + ByteArrayToString(iv);
 
-            // use IV and key to encrypt the message
-            byte[] ciphertext = EncryptAES(message);
-
-            // save to file
-            if (!SaveMessageToFile(ciphertext, "AESCiphertext"))
-            {
-                label3.Text = "failed to save ciphertext";
-            }
-            if (!SaveMessageToFile(iv, "AESiv"))
-            {
-                label3.Text = "failed to save iv";
-            }
-
-            // display message
-            label3.Visible = true;
         }
 
-        public byte[] EncryptAES(byte[] plain)
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-            MemoryStream ms = new MemoryStream();
-            CryptoStream cs = new CryptoStream(ms, keys.AES.CreateEncryptor(), CryptoStreamMode.Write);
-            cs.Write(plain, 0, plain.Length);
-            cs.Close();
-            return ms.ToArray();
+
+        }
+
+        private void Alice_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
